@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -25,6 +27,16 @@ class TestBase
      * @ORM\Column(type="string", length=255)
      */
     private $testDescription;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\TestQuestion", mappedBy="testRelation", orphanRemoval=true)
+     */
+    private $testQuestions;
+
+    public function __construct()
+    {
+        $this->testQuestions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -51,6 +63,37 @@ class TestBase
     public function setTestDescription(string $testDescription): self
     {
         $this->testDescription = $testDescription;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TestQuestion[]
+     */
+    public function getTestQuestions(): Collection
+    {
+        return $this->testQuestions;
+    }
+
+    public function addTestQuestion(TestQuestion $testQuestion): self
+    {
+        if (!$this->testQuestions->contains($testQuestion)) {
+            $this->testQuestions[] = $testQuestion;
+            $testQuestion->setTestRelation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTestQuestion(TestQuestion $testQuestion): self
+    {
+        if ($this->testQuestions->contains($testQuestion)) {
+            $this->testQuestions->removeElement($testQuestion);
+            // set the owning side to null (unless already changed)
+            if ($testQuestion->getTestRelation() === $this) {
+                $testQuestion->setTestRelation(null);
+            }
+        }
 
         return $this;
     }
