@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}UserPassword{% endblock %}
+
+{% block body %}
+    <h1>UserPassword</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ user_password.id }}</td>
+            </tr>
+            <tr>
+                <th>UserPassHash</th>
+                <td>{{ user_password.userPassHash }}</td>
+            </tr>
+            <tr>
+                <th>UserPassSalt</th>
+                <td>{{ user_password.userPassSalt }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('user_password_index') }}">back to list</a>
+
+    <a href="{{ path('user_password_edit', {'id': user_password.id}) }}">edit</a>
+
+    {{ include('user_password/_delete_form.html.twig') }}
+{% endblock %}

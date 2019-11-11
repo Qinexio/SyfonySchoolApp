@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}UserPassword index{% endblock %}
+
+{% block body %}
+    <h1>UserPassword index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>UserPassHash</th>
+                <th>UserPassSalt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user_password in user_passwords %}
+            <tr>
+                <td>{{ user_password.id }}</td>
+                <td>{{ user_password.userPassHash }}</td>
+                <td>{{ user_password.userPassSalt }}</td>
+                <td>
+                    <a href="{{ path('user_password_show', {'id': user_password.id}) }}">show</a>
+                    <a href="{{ path('user_password_edit', {'id': user_password.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('user_password_new') }}">Create new</a>
+{% endblock %}

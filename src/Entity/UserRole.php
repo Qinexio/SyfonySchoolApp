@@ -77,4 +77,11 @@ class UserRole
 
         return $this;
     }
+	
+	public function __toString(){
+        // to show the name of the entity in the select
+        //return $this->entfield;
+        // to show the id of the entity in the select
+        return strval($this->id);
+    }
 }

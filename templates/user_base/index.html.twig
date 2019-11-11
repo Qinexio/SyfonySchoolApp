@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}UserBase index{% endblock %}
+
+{% block body %}
+    <h1>UserBase index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>UserName</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user_base in user_bases %}
+            <tr>
+                <td>{{ user_base.id }}</td>
+                <td>{{ user_base.userName }}</td>
+                <td>
+                    <a href="{{ path('user_base_show', {'id': user_base.id}) }}">show</a>
+                    <a href="{{ path('user_base_edit', {'id': user_base.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('user_base_new') }}">Create new</a>
+{% endblock %}
