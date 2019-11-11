@@ -40,9 +40,15 @@ class UserBase
      */
     private $userRole;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Score", mappedBy="scoreUser", orphanRemoval=true)
+     */
+    private $userScores;
+
     public function __construct()
     {
         $this->userRole = new ArrayCollection();
+        $this->userScores = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -107,6 +113,37 @@ class UserBase
     {
         if ($this->userRole->contains($userRole)) {
             $this->userRole->removeElement($userRole);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Score[]
+     */
+    public function getUserScores(): Collection
+    {
+        return $this->userScores;
+    }
+
+    public function addUserScore(Score $userScore): self
+    {
+        if (!$this->userScores->contains($userScore)) {
+            $this->userScores[] = $userScore;
+            $userScore->setScoreUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserScore(Score $userScore): self
+    {
+        if ($this->userScores->contains($userScore)) {
+            $this->userScores->removeElement($userScore);
+            // set the owning side to null (unless already changed)
+            if ($userScore->getScoreUser() === $this) {
+                $userScore->setScoreUser(null);
+            }
         }
 
         return $this;

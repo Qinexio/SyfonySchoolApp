@@ -33,9 +33,15 @@ class TestBase
      */
     private $testQuestions;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Score", mappedBy="scoreTest", orphanRemoval=true)
+     */
+    private $testScores;
+
     public function __construct()
     {
         $this->testQuestions = new ArrayCollection();
+        $this->testScores = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -92,6 +98,37 @@ class TestBase
             // set the owning side to null (unless already changed)
             if ($testQuestion->getTestRelation() === $this) {
                 $testQuestion->setTestRelation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Score[]
+     */
+    public function getTestScores(): Collection
+    {
+        return $this->testScores;
+    }
+
+    public function addTestScore(Score $testScore): self
+    {
+        if (!$this->testScores->contains($testScore)) {
+            $this->testScores[] = $testScore;
+            $testScore->setScoreTest($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTestScore(Score $testScore): self
+    {
+        if ($this->testScores->contains($testScore)) {
+            $this->testScores->removeElement($testScore);
+            // set the owning side to null (unless already changed)
+            if ($testScore->getScoreTest() === $this) {
+                $testScore->setScoreTest(null);
             }
         }
 
